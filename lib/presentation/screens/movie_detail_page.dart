@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_listing_app/models/movie_models.dart';
 import 'package:movie_listing_app/presentation/widgets/gere_chips.dart';
 import 'package:movie_listing_app/presentation/widgets/white_loading_indicator.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../utils/date_formatter.dart';
 
@@ -175,13 +176,21 @@ class MovieDetailScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500)),
 
                     const SizedBox(height: 4),
-                    Text(
-                      movieModel.summary ?? "",
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    // Html(
-                    //   data: movieModel.summary ?? "",
-                    // )
+                    ReadMoreText(movieModel.summary ?? "",
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                        trimMode: TrimMode.Line,
+                        trimLines: 6,
+                        colorClickableText: Colors.white,
+                        trimCollapsedText: 'Read more',
+                        trimExpandedText: 'Show less',
+                        moreStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold))
                   ],
                 ),
               ),
