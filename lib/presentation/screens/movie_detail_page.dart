@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:movie_listing_app/models/movie_models.dart';
 import 'package:movie_listing_app/presentation/widgets/gere_chips.dart';
 import 'package:movie_listing_app/presentation/widgets/white_loading_indicator.dart';
+
+import '../../utils/date_formatter.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final MovieModel movieModel;
@@ -12,6 +13,9 @@ class MovieDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String premiered = movieModel.premiered != null
+        ? formatDateString(movieModel.premiered!)
+        : "";
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -110,21 +114,21 @@ class MovieDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 2,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Premiered',
+                              const Text('Premiered',
                                   style: TextStyle(
                                       fontFamily: 'Lato',
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500)),
-                              SizedBox(height: 4),
-                              Text('Sept 9, 1967',
-                                  style: TextStyle(
+                              const SizedBox(height: 4),
+                              Text(premiered,
+                                  style: const TextStyle(
                                       fontFamily: 'Lato',
                                       color: Colors.white,
                                       fontSize: 12,
@@ -132,7 +136,7 @@ class MovieDetailScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // const SizedBox(width: 32), // Space between columns
+                        // const SizedBox(width: 32),
                         Expanded(
                           flex: 3,
                           child: Column(
@@ -171,13 +175,13 @@ class MovieDetailScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500)),
 
                     const SizedBox(height: 4),
-                    // Text(
-                    //   movieModel.summary ?? "",
-                    //   style: const TextStyle(color: Colors.white),
-                    // ),
-                    Html(
-                      data: movieModel.summary ?? "",
-                    )
+                    Text(
+                      movieModel.summary ?? "",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    // Html(
+                    //   data: movieModel.summary ?? "",
+                    // )
                   ],
                 ),
               ),
