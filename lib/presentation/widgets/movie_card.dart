@@ -17,22 +17,26 @@ class MovieCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-                Radius.circular(24)), // More rounded corners
-            child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                      child: WhiteLoadingIndicator(),
-                    ),
-                errorWidget: (context, url, error) => const Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    )),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                  Radius.circular(24)), // More rounded corners
+              child: CachedNetworkImage(
+                  width: 170,
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                        child: WhiteLoadingIndicator(),
+                      ),
+                  errorWidget: (context, url, error) => const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      )),
+            ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Align(
           alignment: Alignment.bottomLeft,
           child: Text(

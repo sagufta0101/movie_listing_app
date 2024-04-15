@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../data/repository/movie_repository.dart';
 import '../models/movie_models.dart';
-
 part 'movie_event.dart';
 part 'movie_state.dart';
 

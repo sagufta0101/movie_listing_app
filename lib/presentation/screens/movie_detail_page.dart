@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:movie_listing_app/models/movie_models.dart';
 import 'package:movie_listing_app/presentation/widgets/gere_chips.dart';
+import 'package:movie_listing_app/presentation/widgets/html_text_widget.dart';
 import 'package:movie_listing_app/presentation/widgets/white_loading_indicator.dart';
 import 'package:readmore/readmore.dart';
 
@@ -40,10 +42,14 @@ class MovieDetailScreen extends StatelessWidget {
                   ),
                   // Back button
                   Positioned(
-                    top: 40,
+                    top: 20,
                     left: 10,
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                        size: 36,
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -53,8 +59,17 @@ class MovieDetailScreen extends StatelessWidget {
                   Positioned.fill(
                     child: Align(
                       alignment: Alignment.center,
-                      child: Icon(Icons.play_circle_filled,
-                          size: 64, color: Colors.white.withOpacity(0.9)),
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Colors.white70, Colors.white30],
+                          ).createShader(bounds);
+                        },
+                        child: Icon(Icons.play_circle_rounded,
+                            size: 64, color: Colors.white.withOpacity(0.9)),
+                      ),
                     ),
                   ),
                 ],
@@ -77,27 +92,39 @@ class MovieDetailScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.access_time_filled,
-                          color: Colors.white54,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${movieModel.runtime} minutes',
-                          style:
-                              TextStyle(color: Colors.white.withOpacity(0.5)),
-                        ),
+                        if (movieModel.runtime != null)
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.access_time_outlined,
+                                color: Colors.white60,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${movieModel.runtime} minutes',
+                                style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade300),
+                              ),
+                            ],
+                          ),
                         const SizedBox(width: 16),
                         if (movieModel.rating?.average != null)
                           Row(
                             children: [
                               const Icon(Icons.star,
-                                  color: Colors.white54, size: 20),
+                                  color: Colors.white60, size: 20),
                               const SizedBox(width: 4),
                               Text(
                                 '${movieModel.rating?.average} (IMDb)',
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade300),
                               ),
                             ],
                           ),
@@ -105,9 +132,9 @@ class MovieDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    const Divider(
-                      color: Colors.grey,
-                      thickness: 1,
+                    Divider(
+                      color: Colors.grey.shade700,
+                      thickness: 0.5,
                     ),
                     // Premiere and Genre
                     const SizedBox(height: 16),
@@ -149,10 +176,10 @@ class MovieDetailScreen extends StatelessWidget {
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 6),
                               Wrap(
-                                spacing: 8.0, // gap between adjacent chips
-                                runSpacing: 4.0, // gap between lines
+                                spacing: 14.0, // gap between adjacent chips
+                                runSpacing: 14.0, // gap between lines
                                 children: movieModel.genres!
                                     .map((genre) => GenreChip(genre: genre))
                                     .toList(),
@@ -164,9 +191,9 @@ class MovieDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    const Divider(
-                      color: Colors.grey,
-                      thickness: 1,
+                    Divider(
+                      color: Colors.grey.shade700,
+                      thickness: 0.5,
                     ),
                     const Text('Summary',
                         style: TextStyle(
@@ -176,21 +203,10 @@ class MovieDetailScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500)),
 
                     const SizedBox(height: 4),
-                    ReadMoreText(movieModel.summary ?? "",
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                        trimMode: TrimMode.Line,
-                        trimLines: 6,
-                        colorClickableText: Colors.white,
-                        trimCollapsedText: 'Read more',
-                        trimExpandedText: 'Show less',
-                        moreStyle: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold))
+                    HtmlReadMore(
+                      trimLines: 5,
+                      htmlData: movieModel.summary ?? '',
+                    )
                   ],
                 ),
               ),
